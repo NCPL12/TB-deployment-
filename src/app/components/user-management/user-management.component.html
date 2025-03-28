@@ -1,0 +1,152 @@
+<img src="../../../assets/images/logo1.png" style=" height: 45px; position: absolute; left: 86%;top: 2%; " alt=""> 
+<div class="container mt-5">
+    <div class="mb-5 text-start">
+        <h2  style="margin-left: 20px;color: #001f54;"> User List</h2>
+        <hr style="margin-left: 20px;">
+    </div>
+    <div class="mb-3 text-end">
+        <button class="btn btn-navy" style="margin-right: 10px;" (click)="toggleArchive()"
+        [ngClass]="{ 'btn-navy-border': showArchive, 'btn-navy': !showArchive }">
+        {{ showArchive ? 'Hide Archive' : 'Show Archive' }}
+    </button>
+    
+        <button class="btn btn-navy" (click)="onAddUser()">Add User</button>
+    </div>
+    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+        <table class="table table-bordered table-hover">
+            <thead class="table-navy text-white">
+                <tr>
+                    <th class="text-dark">ID</th>
+                    <th class="text-dark">Username</th>
+                    <!-- <th class="text-dark">Role</th> -->
+                    <th class="text-dark">Full Name</th>
+                    <th class="text-dark">Phone Number</th>
+                    <th scope="col" class="text-dark">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of displayedUsers">
+                    <td *ngFor="let field of ['id', 'username', 'fullName', 'phoneNumber']"
+                        [ngClass]="{ 'deleted-tenant': user.isDeleted }">
+                        {{ user[field] }}
+                    </td>
+                    <td [ngClass]="{ 'deleted-tenant': user.isDeleted }">
+                        <button class="btn btn-outline-navy btn-sm" (click)="onEditUser(user.id)"
+                            [disabled]="user.isDeleted">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm ms-2" (click)="onDeleteUser(user.id)"
+                            [disabled]="user.isDeleted">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <button class="btn btn-outline-navy btn-sm ms-2" (click)="onUpdatePassword(user.id)"
+                            [disabled]="user.isDeleted">
+                            <i class="bi bi-key"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade show" [ngClass]="{'d-block': showForm}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text-navy" *ngIf="!isEdit">Add User</h4>
+                    <h4 class="text-navy" *ngIf="isEdit">Edit User</h4>
+                    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" id="username" class="form-control" [(ngModel)]="currentUser.username"
+                                name="username" required
+                                [ngClass]="{ 'is-invalid': showErrors && (!currentUser.username || usernameError) }" />
+                            <div *ngIf="showErrors && !currentUser.username" class="invalid-feedback">
+                                Username is required.
+                            </div>
+                            <div *ngIf="usernameError" class="invalid-feedback">
+                                {{ usernameError }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" class="form-control" [(ngModel)]="currentUser.role" name="role" required
+                                [ngClass]="{ 'is-invalid': showErrors && !currentUser.role }">
+                                <!-- <option value="admin">Admin</option> -->
+                                <option value="operator">Operator</option>
+                            </select>
+                            <div *ngIf="showErrors && !currentUser.role" class="invalid-feedback">
+                                Role is required.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" [(ngModel)]="currentUser.fullName"
+                                name="fullName" required
+                                [ngClass]="{ 'is-invalid': showErrors && !currentUser.fullName }" />
+                            <div *ngIf="showErrors && !currentUser.fullName" class="invalid-feedback">
+                                Full Name is required.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="number" id="phoneNumber" class="form-control"
+                                [(ngModel)]="currentUser.phoneNumber" name="phoneNumber" required pattern="^[0-9]{10}$"
+                                [ngClass]="{ 'is-invalid': showErrors && !currentUser.phoneNumber }" />
+                            <div *ngIf="showErrors && !currentUser.phoneNumber" class="invalid-feedback">
+                                Phone Number is required and must be 10 digits.
+                            </div>
+                        </div>
+                        <div class="mb-3" *ngIf="!isEdit">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" class="form-control" [(ngModel)]="currentUser.password"
+                                name="password" required minlength="6" maxlength="15"
+                                [ngClass]="{ 'is-invalid': showErrors && !currentUser.password }" />
+                            <div *ngIf="showErrors && !currentUser.password" class="invalid-feedback">
+                                Password is required and must be between 6-15 characters.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-navy" (click)="onCancel()">Cancel</button>
+                    <button type="button" class="btn btn-navy" (click)="onSaveUser()">{{ isEdit ? 'Update' : 'Add'
+                        }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade show" [ngClass]="{'d-block': showPasswordModal}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document" style="margin-top: 150px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text-navy">Change Password</h4>
+                    <button type="button" class="btn-close" aria-label="Close"
+                        (click)="onCancelPasswordUpdate()"></button>
+                </div>
+                <div class="modal-body ">
+                    <p>Are you sure you want to change the password for <b>{{ currentUser.username }}</b>?</p>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" id="newPassword" class="form-control" [(ngModel)]="passwordInput"
+                            name="newPassword" required minlength="6" maxlength="15"
+                            [ngClass]="{ 'is-invalid': showErrors && (!passwordInput || passwordInput.length < 6 || passwordInput.length > 15) }" />
+                        <div *ngIf="showErrors && (!passwordInput || passwordInput.length < 6 || passwordInput.length > 15)"
+                            class="invalid-feedback">
+                            Password must be between 6 and 15 characters.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-navy" (click)="onCancelPasswordUpdate()">Cancel</button>
+                    <button class="btn btn-navy" (click)="onSavePassword()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

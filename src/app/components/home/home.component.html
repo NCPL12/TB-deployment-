@@ -1,0 +1,46 @@
+<img src="../../../assets/images/logo1.png" style=" height: 45px; position: absolute; left: 86%;top: 2%; " alt=""> 
+<div class="container mt-5">
+
+        <div class="mb-4 text-start">
+          
+                <div style=" display: flex; align-items: center; justify-content: space-between;">
+                    <h2 class="text-navy">Building Details</h2>
+                    <!-- <img src="../../../assets/images/logo1.png" style=" height: 45px;" alt=""> -->
+                </div>
+            <hr>    
+
+            
+        </div>
+ 
+        <div class="card shadow bg-dark text-white" style="background-size: cover; background-position: center; background-image: url('../../../assets/images/home_page_background.png');">
+            <div class="card-overlay">
+                <div class="card-body">
+                    <h4 class="card-title text-white mb-3">{{ building?.buildingName }}</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-light">Address</h6>
+                            <p>{{ building?.address }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-light">Total Area</h6>
+                            <p>{{ building?.totalArea }} sq. ft.</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-light">Email</h6>
+                            <p>{{ building?.email }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-light">Person of Contact</h6>
+                            <p>{{ building?.personOfContact }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-light">Phone Number</h6>
+                            <p>{{ building?.phoneNumber }}</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

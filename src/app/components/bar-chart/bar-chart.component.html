@@ -1,0 +1,53 @@
+<img src="../../../assets/images/logo1.png" style=" height: 45px; position: absolute; left: 86%;top: 2%; " alt=""> 
+<div class="container mt-4 p-2">
+        <div  style="margin-left: 35px;"class="mb-4 text-start">
+            <h2  style="color: #001f54;">Daily Visual Report</h2>
+            <hr style="margin-left: 3px;"  >
+        </div>
+    <form style="margin-left: 35px;padding: 6px;">
+        <div class="row mb-3 align-items-top"  style="height: 90px;">
+            <div class="col">
+                <label for="tenantName" class="form-label text-gray">Select Tenant</label>
+                <select class="form-select" id="tenantName"  name="tenantName"
+                    [ngClass]="{ 'is-invalid': showErrors && !selectedTenantId }" (change)="onTenantChange()" [(ngModel)]="selectedTenantId" required>
+                    <!-- <option value="" selected>Select a Tenant</option>                  -->
+                       <option *ngFor="let tenant of tenants" [value]="tenant.id">{{ tenant.name }}</option>
+                </select>
+                <div *ngIf="showErrors && !selectedTenantId" class="invalid-feedback">
+                    Please select a tenant.
+                </div>
+            </div>
+            <div class="col" >
+                <label for="energyMeter" class="form-label text-gray">Select Energy Meter</label>
+                <select class="form-select" id="energyMeter" [(ngModel)]="selectedEnergyMeterId" name="energyMeter"
+                    [ngClass]="{ 'is-invalid': showErrors && !selectedEnergyMeterId }" required>
+                    <!-- <option value="" selected disabled>Select an Energy Meter</option> -->
+                    <option *ngFor="let meter of energyMeters" [value]="meter.name">{{ meter.name }}</option>
+                </select>
+
+                <div *ngIf="showErrors && !selectedEnergyMeterId" class="invalid-feedback">
+                    Please select an energy meter.
+                </div>
+            </div>
+            <div class="col" >
+                <label for="monthYear" class="form-label text-gray">Select Month & Year</label>
+                <input type="month" class="form-control" id="monthYear" [(ngModel)]="selectedMonthYear" name="monthYear"
+                    [ngClass]="{ 'is-invalid': showErrors && !selectedMonthYear }" required />
+                <div *ngIf="showErrors && !selectedMonthYear" class="invalid-feedback">
+                    Please select a month and year.
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="mb-3" style="margin-left: 35px; display: flex; gap: 10px;">
+        <button type="button" class="btn btn-navy px-4 w-100" (click)="handleShowBarChart()">
+            Show Bar Chart
+        </button>
+        <button type="button" class="btn btn-navy px-4 w-100" (click)="handleShowLineChart()">
+            Show Line Chart
+        </button>
+    </div>
+    <div class="mt-4" style="margin-left: 15px;">
+        <canvas #barChartCanvas></canvas>
+    </div>
+</div>

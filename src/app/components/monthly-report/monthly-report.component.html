@@ -1,0 +1,27 @@
+<img src="../../../assets/images/logo1.png" style=" height: 45px; position: absolute; left: 86%;top: 2%; " alt=""> 
+<div class="container mt-4">
+    <!-- Title -->
+    <div class="mb-4 text-start p-2">
+    <h2 style="margin-left:10px;color:#001f54;"> Monthly Report Generation</h2>
+        <hr>
+    </div>
+
+    <form>
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                <label for="monthYear" class="form-label text-gray">Select Month and Year</label>
+                <input type="month" class="form-control" id="monthYear" [(ngModel)]="selectedMonthYear" name="monthYear" required
+                    [ngClass]="{ 'is-invalid': showErrors && !selectedMonthYear }" (change)="onInputChange()" />
+                <div *ngIf="showErrors && !selectedMonthYear" class="invalid-feedback">
+                    Please select a valid month and year.
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-navy px-4 w-100" (click)="exportPdfReport()" [disabled]="!selectedMonthYear">Export as PDF</button>
+            </div>
+        </div>
+    </form>
+</div>

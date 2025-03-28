@@ -1,0 +1,80 @@
+<img src="../../../assets/images/logo1.png" style=" height: 45px; position: absolute; left: 86%;top: 2%; " alt=""> 
+
+<div class="container mt-3">
+    <!-- Title -->
+    <div class="mb-4 text-start p-2">
+        <h2 class="text-navy">Energy Meter Management</h2>
+        <hr>
+    </div>
+    <div class="mb-3 text-end">
+        <button class="btn btn-navy" (click)="onAddEnergyMeter()">Add Energy Meter</button>
+    </div>
+    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+        <table class="table table-bordered table-hover">
+            <thead class="table-navy text-white">
+                <tr>
+                    <th scope="col" class="text-dark">ID</th>
+                    <th scope="col" class="text-dark">Name</th>
+                    <th scope="col" class="text-dark">Tenant ID</th>
+                    <th scope="col" class="text-dark">Tenant Name</th>
+                    <th scope="col" class="text-dark">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let energyMeter of energyMeters">
+                    <td>{{ energyMeter.id }}</td>
+                    <td>{{ energyMeter.name }}</td>
+                    <td>{{ energyMeter.tenantId }}</td>
+                    <td>{{ energyMeter.tenantName || 'N/A' }}</td>
+                    <td>
+                        <button class="btn btn-outline-navy btn-sm me-2" (click)="onEditEnergyMeter(energyMeter.id)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade show" [ngClass]="{ 'd-block': showForm }" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text-navy">{{ isEdit ? 'Edit' : 'Add' }} Energy Meter</h4>
+                    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <label for="name" class="form-label">Energy Meter Name</label>
+                        <select id="name" class="form-control" [(ngModel)]="currentEnergyMeter.name" name="name"
+                                [disabled]="isEdit || availableEnergyMeterNames.length === 0">
+                            <option *ngFor="let name of availableEnergyMeterNames" [value]="name">
+                                {{ name }}
+                            </option>
+                        </select>
+                    
+                        <div *ngIf="!isEdit && availableEnergyMeterNames.length === 0" class="text-danger mt-2">
+                            No available energy meters to add.
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="tenantId" class="form-label">Select Tenant</label>
+                            <select id="tenantId" class="form-control" [(ngModel)]="currentEnergyMeter.tenantId" name="tenantId" required>
+                                <option *ngFor="let tenant of availableTenants" [value]="tenant.id">
+                                    {{ tenant.id }} - {{ tenant.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </form>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-navy" (click)="onCancel()">Cancel</button>
+                    <button type="button" class="btn btn-navy" (click)="onSaveEnergyMeter()">
+                        {{ isEdit ? 'Update' : 'Add' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<img src="../../../assets/images/logo1.png" style="height: 45px; position: absolute; left: 86%;top: 2%;" alt="">
+
+<div class="container mt-4">
+    <div class="mb-5 text-start">
+        <h2 style="margin-left: 20px;color: #001f54;">Floor List</h2>
+        <hr style="margin-left: 20px;">
+    </div>
+    <div class="mb-3 text-end p-2">
+        <button class="btn btn-navy" (click)="onAddFloor()">Add Floor</button>
+    </div>
+    
+    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+        <table class="table table-bordered table-hover text-center">
+            <thead class="table-navy text-white">
+                <tr>
+                    <th scope="col" class="text-dark text-center">ID</th>
+                    <th scope="col" class="text-dark text-center">Floor Name</th>
+                    <th scope="col" class="text-dark text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let floor of displayedFloors" class="text-center">
+                    <td class="text-center">{{ floor.id }}</td>
+                    <td class="text-center">{{ floor.floorName }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-navy btn-sm me-2" (click)="onEditFloor(floor.id)">  
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" (click)="onDeleteFloor(floor.id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for Adding/Editing Floor -->
+    <div class="modal fade show" [ngClass]="{'d-block': showForm}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text-navy" *ngIf="!isEdit">Add Floor</h4>
+                    <h4 class="text-navy" *ngIf="isEdit">Edit Floor</h4>
+                    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="floorName" class="form-label">Floor Name</label>
+                            <input type="text" id="floorName" class="form-control" [(ngModel)]="currentFloor.floorName"
+                                name="floorName" required [ngClass]="{ 'is-invalid': showErrors && !currentFloor.floorName }" />
+                            <div *ngIf="showErrors && !currentFloor.floorName" class="invalid-feedback">
+                                Floor name is required.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-navy" (click)="onCancel()">Cancel</button>
+                    <button type="button" class="btn btn-navy" (click)="onSaveFloor()">{{ isEdit ? 'Update' : 'Add' }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

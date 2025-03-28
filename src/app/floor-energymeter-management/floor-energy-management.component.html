@@ -1,0 +1,74 @@
+<div class="container mt-3">
+    <div class="mb-4 text-start p-2">
+        <h2 class="text-navy">Floor to Energy Meter Management</h2>
+        <hr>
+    </div>
+
+    <div class="mb-3 text-end">
+        <button class="btn btn-navy" (click)="onAddFloorEnergyMapping()">Add Energy Meter</button>
+    </div>
+
+    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+        <table class="table table-bordered table-hover">
+            <thead class="table-navy text-white">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Energy Meter</th>
+                    <th scope="col">Floor Name</th>
+
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let mapping of floorEnergyMeters">
+                    <td>{{ mapping.id }}</td>
+
+                    <td>{{ mapping.name }}</td>
+                    <td>{{ mapping.floorName }}</td>
+                    <td>
+                        <button class="btn btn-outline-navy btn-sm" (click)="onEditFloorEnergyMapping(mapping.id)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade show" [ngClass]="{ 'd-block': showForm }" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text-navy">{{ isEdit ? 'Edit' : 'Add' }} Mapping</h4>
+                    <button type="button" class="btn-close" (click)="onCancel()"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="floorId" class="form-label1">Select Floor</label>
+                                </div>
+                                <select id="floorId" class="form-control" [(ngModel)]="currentFloorMeter.floorId" name="floorId">
+  <option value="" disabled>Select Floor</option>
+  <option *ngFor="let floor of availableFloors" [value]="floor.id">
+    {{ floor.floorName }}
+  </option>
+</select>
+
+                        <div class="mb-3">
+                            <label for="energyMeterId" class="form-label">Select Energy Meter</label>
+                            <select id="energyMeterId" class="form-control" [(ngModel)]="currentFloorMeter.energyMeterId" name="energyMeterId">
+                                <option *ngFor="let meter of availableEnergyMeters" [value]="meter.id">{{ meter.name }}</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-navy" (click)="onCancel()">Cancel</button>
+                    <button class="btn btn-navy" (click)="onSaveFloorEnergyMapping()">
+                        {{ isEdit ? 'Update' : 'Add' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

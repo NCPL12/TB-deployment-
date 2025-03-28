@@ -1,0 +1,158 @@
+<img src="../../../assets/images/logo1.png" style=" height: 45px; position: absolute; left: 86%;top: 2%; " alt="">  
+<div class="container mt-5">
+    <div class="mb-4 text-start">
+        <h2 class="text-navy">Building Details</h2>
+        <hr>
+    </div>
+
+<!-- Building Details Container -->
+<div class="container mt-4">
+    <div class="card shadow-lg building-card text-white">
+        <div class="card-overlay">
+            <!-- Edit Button -->
+            <button class="btn btn-primary edit-button" (click)="openEditModal()">Edit</button>
+            
+            <div class="card-body">
+                <!-- Building Name -->
+                <h4 class="card-title text-white mb-4">{{ building?.buildingName }}</h4>
+
+                <!-- Details Grid -->
+                <div class="row mb-3">
+                    <!-- Address -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-light">Address</h6>
+                        <p>{{ building?.address }}</p>
+                    </div>
+                    <!-- Total Area -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-light">Total Area</h6>
+                        <p>{{ building?.totalArea }} sq. ft.</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <!-- Email -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-light">Email</h6>
+                        <p>{{ building?.email }}</p>
+                    </div>
+                    <!-- Person of Contact -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-light">Person of Contact</h6>
+                        <p>{{ building?.personOfContact }}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <!-- Phone Number -->
+                    <div class="col-md-6 " style=" height: 70px;">
+                        <h6 class="text-light">Phone Number</h6>
+                        <p>{{ building?.phoneNumber }}</p>
+                    </div>
+                    <!-- Account Details -->
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-light">Account Details</h6>
+                        <p><strong>Account Name:</strong> {{ building?.accountName }}</p>
+                        <p><strong>Account Number:</strong> {{ building?.accountNumber }}</p>
+                        <p><strong>IFSC Code:</strong> {{ building?.ifscCode }}</p>
+                    </div>
+                </div>
+
+                <!-- Auto Configuration -->
+               <!-- Auto Configuration -->
+<div>
+    <div style="height: 100px; position:absolute; top: 76%;">
+        <h6 class="text-light">Auto Configuration</h6>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="schedule" [(ngModel)]="building.schedule"   disabled>
+            <label class="form-check-label text-white" for="schedule">Schedule</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="sendMail" [(ngModel)]="building.sendMail" disabled>
+            <label class="form-check-label text-white" for="sendMail">Email to Tenent</label>
+        </div>
+
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>  
+
+</div>
+
+<div class="modal fade show d-block" *ngIf="isEditModalOpen" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Building Details</h5>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="saveChanges()">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Building Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.buildingName" name="buildingName" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.address" name="address" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Total Area (sq. ft.)</label>
+                            <input type="number" class="form-control" [(ngModel)]="editableBuilding.totalArea" name="totalArea" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" [(ngModel)]="editableBuilding.email" name="email" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Person of Contact</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.personOfContact" name="personOfContact" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Phone Number</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.phoneNumber" name="phoneNumber" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Account Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.accountName" name="accountName">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Account Number</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.accountNumber" name="accountNumber">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Confirm Account Number</label>
+                            <input type="text" class="form-control" [(ngModel)]="confirmAccountNumber" name="confirmAccountNumber">
+                            <div *ngIf="accountNumberMismatch" class="text-danger">
+                                Account Number and Confirm Account Number do not match.
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>IFSC Code</label>
+                            <input type="text" class="form-control" [(ngModel)]="editableBuilding.ifscCode" name="ifscCode">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <h6>Auto Configuration</h6>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="editableBuilding.schedule" name="schedule">
+                                <label class="form-check-label" for="schedule">Schedule</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="editableBuilding.sendMail" name="sendMail">
+                                <label class="form-check-label" for="sendMail">Email to Tenant</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
